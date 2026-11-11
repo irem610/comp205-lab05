@@ -10,24 +10,19 @@ class NotesRepository {
 
   final FirebaseFirestore _db;
 
-  /// The notes collection of one user. Given.
-  _notes(String uid) {
+  /// The notes collection of one user.
+  CollectionReference<Map<String, dynamic>> _notes(String uid) {
     return _db.collection('users').doc(uid).collection('notes');
   }
 
-  /// Live list of the user's notes, newest first:
-  /// orderBy('createdAt', descending: true), .snapshots(), then map every
-  /// snapshot to a `List<Note>` with Note.fromFirestore(doc.id, doc.data()).
+  /// Live list of the user's notes, newest first.
   Stream<List<Note>> watchNotes(String uid) {
     return _notes(uid)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
-          .map((doc) => Note.fromFirestore(
-        doc.id,
-        doc.data() as Map<String, dynamic>,
-      ))
+          .map((doc) => Note.fromFirestore(doc.id, doc.data()))
           .toList(),
     );
   }
