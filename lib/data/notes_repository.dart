@@ -11,7 +11,7 @@ class NotesRepository {
   final FirebaseFirestore _db;
 
   /// The notes collection of one user. Given.
-  _notes(String uid) =>
+   _notes(String uid) =>
       _db.collection('users').doc(uid).collection('notes');
 
   /// Live list of the user's notes, newest first:
