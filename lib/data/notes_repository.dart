@@ -21,7 +21,8 @@ class NotesRepository {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return (snapshot.docs as List)
+      final docs = (snapshot as dynamic).docs as List;
+      return docs
           .map((doc) => Note.fromFirestore(doc.id, doc.data()))
           .toList();
     });
