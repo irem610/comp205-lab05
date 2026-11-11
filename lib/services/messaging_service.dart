@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 
 /// Part 6: push notifications with Firebase Cloud Messaging (FCM).
 class MessagingService {
@@ -23,10 +24,7 @@ class MessagingService {
     final token = await _messaging.getToken();
     await _messaging.subscribeToTopic(topic);
 
-    //for easy dedatch in terminal
-    print('**************************************************');
-    print('TOKEN_START: $token');
-    print('**************************************************');
+    debugPrint('FCM Token: $token');
 
     return token;
   }
