@@ -11,8 +11,9 @@ class NotesRepository {
   final FirebaseFirestore _db;
 
   /// The notes collection of one user. Given.
-  CollectionReference> _notes(String uid) =>
-      _db.collection('users').doc(uid).collection('notes');
+  CollectionReference> _notes(String uid) {
+    return _db.collection('users').doc(uid).collection('notes');
+  }
 
   /// Live list of the user's notes, newest first:
   /// orderBy('createdAt', descending: true), .snapshots(), then map every
