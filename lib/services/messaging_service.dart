@@ -23,6 +23,11 @@ class MessagingService {
     final token = await _messaging.getToken();
     await _messaging.subscribeToTopic(topic);
 
+    //for easy dedatch in terminal
+    print('**************************************************');
+    print('TOKEN_START: $token');
+    print('**************************************************');
+
     return token;
   }
 
