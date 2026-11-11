@@ -10,22 +10,26 @@ class NotesRepository {
 
   final FirebaseFirestore _db;
 
-  /// The notes collection of one user.
+  /// The notes collection of one user. Given.
   _notes(String uid) {
     return _db.collection('users').doc(uid).collection('notes');
   }
 
-  /// Live list of the user's notes, newest first.
+  /// Live list of the user's notes, newest first:
+  /// orderBy('createdAt', descending: true), .snapshots(), then map every
+  /// snapshot to a `List<Note>` with Note.fromFirestore(doc.id, doc.data()).
   Stream<List<Note>> watchNotes(String uid) {
     return _notes(uid)
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snapshot) {
-      final docs = (snapshot as dynamic).docs as List;
-      return docs
-          .map((doc) => Note.fromFirestore(doc.id, doc.data()))
-          .toList();
-    });
+        .map(
+          (snapshot) => snapshot.docs
+          .map((doc) => Note.fromFirestore(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      ))
+          .toList(),
+    );
   }
 
   /// Adds a note. Title and body are trimmed. Throws an ArgumentError if the
